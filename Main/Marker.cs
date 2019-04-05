@@ -1,3 +1,4 @@
+using System;
 using RAGE;
 using RAGE.Game;
 using Player = RAGE.Elements.Player;
@@ -18,10 +19,13 @@ namespace Main
 
         public RAGE.Elements.Marker Instance { get; }
 
-        public bool PlayerIsOnMarker => Instance.Position.DistanceTo2D(Player.LocalPlayer.Position) <= Size;
+        public bool PlayerIsOnMarker =>
+            Player.LocalPlayer.Position.DistanceTo2D(Instance.Position) <= Size
+            && Math.Abs(Player.LocalPlayer.Position.Z) - Math.Abs(Instance.Position.Z) < Size;
 
         public virtual void Destroy()
         {
+            Instance.Destroy();
         }
 
         public void Complete()
