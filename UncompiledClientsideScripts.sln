@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{1A32AB0B-F928-45BF-A7F2-20E6F9F47227}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopsNRobbersFrontend", "CopsNRobbersFrontend\CopsNRobbersFrontend.csproj", "{1A32AB0B-F928-45BF-A7F2-20E6F9F47227}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
