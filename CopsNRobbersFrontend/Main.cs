@@ -6,6 +6,7 @@ using RAGE.Game;
 
 namespace CopsNRobbersFrontend
 {
+    // ReSharper disable once UnusedMember.Global
     public class Main : RAGE.Events.Script
     {
         private const int TicksForAroundOneSecond = 80;

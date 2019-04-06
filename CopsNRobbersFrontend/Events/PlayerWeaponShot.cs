@@ -18,8 +18,6 @@ namespace CopsNRobbersFrontend.Events
         {
             if (target == null)
                 return Crime.UnlawfulDischargeOfWeapon;
-            if (target.GetHealth() == 0)
-                return Crime.Murder;
             return Crime.AssaultWithADeadlyWeapon;
         }
     }
