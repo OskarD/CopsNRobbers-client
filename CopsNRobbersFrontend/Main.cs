@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using CopsNRobbersFrontend.Crimes;
+using CopsNRobbersFrontend.Events;
 using RAGE;
 using RAGE.Game;
 
 namespace CopsNRobbersFrontend
 {
-    public class Main : Events.Script
+    public class Main : RAGE.Events.Script
     {
         private const int TicksForAroundOneSecond = 80;
 
@@ -18,16 +18,27 @@ namespace CopsNRobbersFrontend
         public Main()
         {
             Graphics.GetScreenResolution(ref _resX, ref _resY);
-            Events.Add("load_job_objective", LoadJobObjective);
-            Events.OnPlayerWeaponShot += new Witness().OnPlayerWeaponShot;
-            Events.Tick += OnTick;
+            RAGE.Events.Add("load_job_objective", LoadJobObjective);
+            RAGE.Events.OnPlayerWeaponShot += PlayerWeaponShot.OnPlayerWeaponShot;
+            RAGE.Events.Tick += OnTick;
 
             Chat.Output("Loaded Clientside");
         }
 
         private static MissionMarker NextObjective { get; set; }
 
-        private void OnTick(List<Events.TickNametagData> nametags)
+        private static void LoadJobObjective(object[] args)
+        {
+            var markerPosition = (Vector3) args[0];
+            var markerSize = Convert.ToSingle(args[1]);
+
+            if (markerPosition == null) return;
+
+            NextObjective?.Destroy();
+            NextObjective = new MissionMarker(markerPosition, markerSize);
+        }
+
+        private void OnTick(List<RAGE.Events.TickNametagData> nametags)
         {
             _tick++;
 
@@ -50,19 +61,8 @@ namespace CopsNRobbersFrontend
             {
                 NextObjective.Complete();
                 NextObjective = null;
-                Events.CallRemote("job_objective_completed");
+                RAGE.Events.CallRemote("job_objective_completed");
             }
-        }
-
-        private static void LoadJobObjective(object[] args)
-        {
-            var markerPosition = (Vector3) args[0];
-            var markerSize = Convert.ToSingle(args[1]);
-
-            if (markerPosition == null) return;
-
-            NextObjective?.Destroy();
-            NextObjective = new MissionMarker(markerPosition, markerSize);
         }
     }
 }

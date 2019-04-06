@@ -1,42 +1,18 @@
 using System.Collections.Generic;
-using RAGE;
-using RAGE.Elements;
+using CopsNRobbers_shared.DataModels.Crimes;
+using static RAGE.Events;
 
 namespace CopsNRobbersFrontend.Crimes
 {
-    public class Witness
+    public static class Witness
     {
-        public Witness()
-        {
-            CrimesCommitted = new List<Crime>();
-        }
+        public static List<Crime> CrimesCommitted { get; } = new List<Crime>();
 
-        public List<Crime> CrimesCommitted { get; }
-
-        public List<Crime> CrimesWitnessed { get; }
-
-        public void OnPlayerWeaponShot(Vector3 targetPos, Player target, Events.CancelEventArgs cancel)
-        {
-            var crime = GetCrime(target);
-            AddCrimeCommitted(crime);
-
-            var targetName = target != null ? target.Name : "nobody";
-            Chat.Output($"You shot a weapon at {targetName}. You committed {crime}!");
-        }
-
-        private void AddCrimeCommitted(Crime crime)
+        public static void AddCrimeCommitted(Crime crime)
         {
             CrimesCommitted.Add(crime);
-            Events.CallRemote("crime_committed", crime);
-        }
-
-        private Crime GetCrime(Player target)
-        {
-            if (target == null)
-                return Crime.UnlawfulDischargeOfWeapon;
-            if (target.IsDeadOrDying(true))
-                return Crime.Murder;
-            return Crime.AssaultWithADeadlyWeapon;
+            // TODO: If cop, don't
+            CallRemote("crime_committed", crime.ToString());
         }
     }
 }
